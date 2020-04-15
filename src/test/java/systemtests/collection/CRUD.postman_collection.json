@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "5db74824-4230-4a7a-a6b0-ba7d40e26b23",
+		"name": "CRUD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post an user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2c420b67-18e5-40c8-997c-3e39e0386248",
+						"exec": [
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Check, if response is correct\", function () {",
+							"    var responseData = pm.response.json();",
+							"    pm.expect(responseData.firstName).to.eql(JSON.parse(pm.environment.get(\"UserToBeTested\")).firstName);",
+							"    pm.expect(responseData.lastName).to.eql(JSON.parse(pm.environment.get(\"UserToBeTested\")).lastName);",
+							"    pm.expect(responseData.email).to.eql(JSON.parse(pm.environment.get(\"UserToBeTested\")).email);",
+							"    pm.environment.set(\"UserToBeTested\", JSON.stringify(responseData));",
+							"    pm.environment.set(\"UserID\", responseData.id);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{UserToBeTested}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ivoadvancedcoursem223.herokuapp.com/users",
+					"protocol": "https",
+					"host": [
+						"ivoadvancedcoursem223",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				},
+				"description": "https://ivoadvancedcoursem223.herokuapp.com/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Get an user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "42baca1c-6d6e-43e3-aa2a-1da80fbd3333",
+						"exec": [
+							"pm.test(\"Response time is less than 300\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check, if response is correct\", function () {",
+							"    var responseData = pm.response.json();",
+							"    pm.expect(responseData.id).to.eql(JSON.parse(pm.environment.get(\"UserID\")));",
+							"    pm.expect(responseData.firstName).to.eql(JSON.parse(pm.environment.get(\"UserToBeTested\")).firstName);",
+							"    pm.expect(responseData.lastName).to.eql(JSON.parse(pm.environment.get(\"UserToBeTested\")).lastName);",
+							"    pm.expect(responseData.email).to.eql(JSON.parse(pm.environment.get(\"UserToBeTested\")).email);",
+							"    pm.environment.set(\"UserToBeUpdated\", pm.environment.get(\"UserToBeTested\"));",
+							"    pm.environment.set(\"UserToBeUpdated\", \"j.keller@eth.ch\").email;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ivoadvancedcoursem223.herokuapp.com/users/{{UserID}}",
+					"protocol": "https",
+					"host": [
+						"ivoadvancedcoursem223",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{UserID}}"
+					]
+				},
+				"description": "https://ivoadvancedcoursem223.herokuapp.com/users/2643dbc0-cd29-4446-84cb-0c98aed89fb8"
+			},
+			"response": []
+		},
+		{
+			"name": "Put an user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ca3c957f-858b-4e83-9ace-ad699f2dab35",
+						"exec": [
+							"pm.test(\"Response time is less than 300ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check, if response is correct\", function () {",
+							"    var responseData = pm.response.json();",
+							"    pm.expect(responseData.id).to.eql(JSON.parse(pm.environment.get(\"UserToBeUpdated\")));",
+							"    pm.expect(responseData.firstName).to.eql(JSON.parse(pm.environment.get(\"UserToBeUpdated\")).firstName);",
+							"    pm.expect(responseData.lastName).to.eql(JSON.parse(pm.environment.get(\"UserToBeUpdated\")).lastName);",
+							"    pm.expect(responseData.email).to.eql(JSON.parse(pm.environment.get(\"UserToBeUpdated\")).email);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{UserToBeUpdated}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ivoadvancedcoursem223.herokuapp.com/users/{{UserID}}",
+					"protocol": "https",
+					"host": [
+						"ivoadvancedcoursem223",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{UserID}}"
+					]
+				},
+				"description": "https://ivoadvancedcoursem223.herokuapp.com/users/2643dbc0-cd29-4446-84cb-0c98aed89fb8"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "01eab10e-bb6f-405d-835c-3c4d33e8bd44",
+						"exec": [
+							"pm.test(\"Response time is less than 300ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.test(\"Response should be okay to process\", function () {",
+							"    pm.response.to.not.be.error;",
+							"    pm.response.to.not.have.jsonBody(\"No content\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://ivoadvancedcoursem223.herokuapp.com/users/{{UserID}}",
+					"protocol": "https",
+					"host": [
+						"ivoadvancedcoursem223",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{UserID}}"
+					]
+				},
+				"description": "https://ivoadvancedcoursem223.herokuapp.com/users/2c92238a717df12101717e02d0130001"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f5aee3a1-c813-43c0-81ba-a228547f6730",
+						"exec": [
+							"pm.test(\"Response time is less than 300ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ivoadvancedcoursem223.herokuapp.com/users",
+					"protocol": "https",
+					"host": [
+						"ivoadvancedcoursem223",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				},
+				"description": "https://ivoadvancedcoursem223.herokuapp.com/users"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
