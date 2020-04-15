@@ -1,6 +1,8 @@
 jdk:
   - openjdk11
 
+language: java
+
 stages:
   - unitIntegrationTest
   - continousDelivery
