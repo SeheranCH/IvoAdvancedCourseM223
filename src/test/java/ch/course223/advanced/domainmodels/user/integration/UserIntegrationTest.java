@@ -98,6 +98,22 @@ public class UserIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].email").value(Matchers.containsInAnyOrder(userDTOToBeTestedAgainst1.getEmail(),userDTOToBeTestedAgainst2.getEmail())));
 
     }
+
+    @Test
+    public void create_deliverUserToCreate_returnCreatedUser() throws Exception {
+        User userToBeTestedAgainst = new User().setFirstName("Alfred").setLastName("Hauser").setEmail("alfred.hauser@swiss.ch");
+        userRepository.save(userToBeTestedAgainst);
+
+        UserDTO userDTOToBeTestedAgainst = new UserDTO(userToBeTestedAgainst.getId()).setFirstName("Alfred").setLastName("Hauser").setEmail("alfred.hauser@swiss.ch");
+        mvc.perform(
+                MockMvcRequestBuilders.post("/users")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(userDTOToBeTestedAgainst.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(userDTOToBeTestedAgainst.getFirstName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(userDTOToBeTestedAgainst.getLastName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(userDTOToBeTestedAgainst.getEmail()));
+    }
 }
 
 
