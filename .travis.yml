@@ -2,23 +2,20 @@ jdk:
   - openjdk11
 
 stages:
-  - buildAutomation
-  - continousIntegration
+  - unitIntegrationTest
   - continousDelivery
   - continousDeployment
 
 before_install:
   - chmod +x gradlew
 
-install:
-  - npm install newman
+#install:
+# - npm install newman
 
 jobs:
   include:
-    - stage: buildAutomation
-      script: ./gradlew test --tests '*unit*'
-    - stage: continousIntegration
-      script: ./gradlew test --tests '*integration*'
+    - stage: unitIntegrationTest
+      script: ./gradlew test
     - stage: continousDelivery
       deploy:
         provider: heroku
