@@ -1,18 +1,18 @@
 jdk:
   - openjdk11
-  
+
 stages:
   - buildAutomation
   - continousIntegration
   - continousDelivery
   - continousDeployment
-  
+
 before_install:
   - chmod +x gradlew
-  
+
 install:
   - npm install newman
-    
+
 jobs:
   include:
     - stage: buildAutomation
