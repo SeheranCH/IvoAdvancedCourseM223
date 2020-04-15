@@ -72,8 +72,8 @@ bootJar {
 }
 
 sonarqube {
-  properties {
-    property "sonar.projectKey", "yagan93_uek_223_advanced"
+   properties {
+    property "sonar.projectKey", "SeheranCH_IvoAdvancedCourseM223"
   }
 }
 
