@@ -1,13 +1,29 @@
 jdk:
   - openjdk11
-
+  
+stages:
+  - buildAutomation
+  - continousIntegration
+  - continousDelivery
+  - continousDeployment
+  
 before_install:
- - chmod +x gradlew
-
-addons:
-  sonarcloud:
-    organization: $SONAR_USER
-    token: $SONAR_TOKEN
-
-script:
-  - ./gradlew sonarqube
+  - chmod +x gradlew
+  
+install:
+  - npm install newman
+    
+jobs:
+  include:
+    - stage: buildAutomation
+      script: ./gradlew test --tests '*unit*'
+    - stage: continousIntegration
+      script: ./gradlew test --tests '*integration*'
+    - stage: continousDelivery
+      deploy:
+        provider: heroku
+        api-key: $HEROKU_API_KEY
+        app: $HEROKU_STAGING_APP
+      after_success:
+    #  script: newman run src/test/java/system/collection/uek223_advanced.postman_collection.json -e src/test/java/system/environment/uek223_advanced.postman_environment.json
+    - stage: continousDeployment
