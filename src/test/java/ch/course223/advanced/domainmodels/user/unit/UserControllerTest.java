@@ -92,10 +92,8 @@ public class UserControllerTest {
             return (userToBeTestedAgainst);
         });
 
-        UUID uuid = UUID.randomUUID();
-
         mvc.perform(
-                MockMvcRequestBuilders.get("/users/{id}", uuid.toString())
+                MockMvcRequestBuilders.get("/users/{id}", userToBeTestedAgainst.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(userToBeTestedAgainst.getId()))
@@ -135,9 +133,10 @@ public class UserControllerTest {
     public void create_deliverUserDTOToCreate_returnCreatedUserDTO() throws Exception {
         String userDTOAsJsonString = new ObjectMapper().writeValueAsString(userDTOToBeTestedAgainst);
 
+        UUID uuid = UUID.randomUUID();
+
         given(userService.save(any(User.class))).will(invocation -> {
             if ("non-existent".equals(invocation.getArgument(0))) throw new BadRequestException();
-            UUID uuid = UUID.randomUUID();
             User user = invocation.getArgument(0);
             return user.setId(uuid.toString());
         });
@@ -148,6 +147,7 @@ public class UserControllerTest {
                         .content(userDTOAsJsonString)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(uuid))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(userDTOToBeTestedAgainst.getFirstName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(userDTOToBeTestedAgainst.getLastName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(userDTOToBeTestedAgainst.getEmail()))
@@ -181,6 +181,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(userDTOToBeTestedAgainst.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(userDTOToBeTestedAgainst.getFirstName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(userDTOToBeTestedAgainst.getLastName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(userDTOToBeTestedAgainst.getEmail()))
@@ -241,5 +242,4 @@ public class UserControllerTest {
         verify(userService, times(1)).deleteById(stringArgumentCaptor.capture());
         Assert.assertEquals(uuid.toString(),stringArgumentCaptor.getValue());
     }
-
 }

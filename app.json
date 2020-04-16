@@ -1,6 +1,7 @@
-"name": "Spring Boot App",
-"description": "Spring Boot App with CICD",
-"repository": "https://github.com/SeheranCH/IvoAdvancedCourseM223",
-"logo": "https://node-js-sample.herokuapp.com/node.png",
-"keywords": ["node", "express", "static"]
+{
+  "name": "Spring Boot App",
+  "description": "Spring Boot App with CICD",
+  "repository": "https://github.com/SeheranCH/IvoAdvancedCourseM223",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "static"]
 }
